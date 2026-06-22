@@ -1,0 +1,75 @@
+# Global configuration for asx-index-flow-alpha-lab.
+# Paths are relative to the repo root unless absolute.
+
+paths:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  data_manual: data/manual
+  reports: reports
+  figures: reports/figures
+  tables: reports/tables
+  scorecards: reports/scorecards
+
+fmp:
+  # API key & base url come from the environment (.env). See .env.example.
+  cache_dir: data/raw/fmp
+  cache_ttl_days: 1          # re-use cached pulls newer than this
+  exchange: ASX             # FMP exchange code for the Australian Securities Exchange
+  suffix: ".AX"            # FMP ticker suffix for ASX names
+  max_retries: 4
+  backoff_seconds: 1.5
+
+web:
+  cache_dir: data/raw/web
+  # Be a good citizen: respect robots, throttle, and prefer manual drop-ins
+  # for anything that is licensed or blocks automated access.
+  respect_robots: true
+  timeout_seconds: 30
+
+universe:
+  # Trading-day calendar approximation. ASX trades Mon-Fri ex public holidays;
+  # we use business days and let price data presence filter the rest.
+  min_price: 0.02           # ignore sub-2c illiquid shells for tradeability
+  min_adv_dollars: 50000    # minimum 3m average daily traded value to be "tradeable"
+
+event_study:
+  # Windows are (start, end) in trading days relative to the reference date.
+  # Reference dates: ann = announcement, eff = effective/implementation date.
+  windows:
+    pre_announcement:      [-20, -1]      # rel ann
+    ann_close_to_next_open: [0, 1]        # rel ann (close-to-open handled in code)
+    ann_close_to_next_close: [0, 1]       # rel ann
+    next_open_to_plus3:    [1, 3]         # rel ann
+    next_open_to_effective: ["next_open", "eff"]
+    effective_day:         [0, 0]         # rel eff (open->close)
+    eff_close_plus1:       [0, 1]         # rel eff
+    eff_close_plus3:       [0, 3]         # rel eff
+    eff_close_plus5:       [0, 5]         # rel eff
+    eff_close_plus10:      [0, 10]        # rel eff
+    holdings_change_next_open: [0, 1]     # rel holdings-file-change date
+    holdings_change_plus5: [0, 5]         # rel holdings-file-change date
+  small_number: 0.005       # floor for the underreaction denominator (0.5%)
+
+flow:
+  adv_lookback_days: 63     # ~3 months of trading days for ADV
+  default_participation_cap: 0.10   # assume an index/ETF can absorb at most this
+                                    # fraction of ADV/day when implementing
+  implementation_days: 5    # assume passive implementation spread over N days
+
+costs:
+  brokerage_bps: 8.0        # round-trip-ish per side, basis points of notional
+  half_spread_bps: 15.0     # half bid/ask spread, basis points (ASX small-cap heavy)
+  slippage_bps: 10.0        # baseline slippage
+  impact_coef: 0.10         # market-impact: bps = coef * (trade_value/ADV) * 10000
+  harsh_multiplier: 2.0     # "harsher costs" stress multiplier on spread+slippage+impact
+  max_participation: 0.10   # reject/clip trades above this fraction of ADV
+
+backtest:
+  entry_variants: [next_open, next_close, vwap_proxy]
+  default_entry: next_open
+  capital_per_trade: 100000 # AUD notional per event for capacity/return math
+
+reporting:
+  tables_dir: reports/tables
+  scorecards_dir: reports/scorecards

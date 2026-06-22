@@ -1,0 +1,62 @@
+# Themes and the products/indices to monitor for each. Seeds the registry and
+# the discovery loop. ASX names listed are EXAMPLES of likely-exposed tickers to
+# watch, NOT confirmed current holdings (always verified against a real holdings
+# snapshot before any event is emitted).
+
+themes:
+  uranium:
+    keywords: [uranium, nuclear fuel, U3O8, yellowcake]
+    products: [URNM, URNJ, ATOM, NLR, URA]
+    watch_asx: [PDN.AX, BOE.AX, DYL.AX, PEN.AX, LOT.AX, BMN.AX, AGE.AX, NXG.AX]
+  rare_earths_strategic_metals:
+    keywords: [rare earth, neodymium, praseodymium, strategic metals, critical minerals]
+    products: [REMX, MVRARE, ARE]
+    watch_asx: [LYC.AX, ILU.AX, ARU.AX, HAS.AX, LTR.AX, MEI.AX]
+  gold_miners:
+    keywords: [gold miners, gold mining]
+    products: [GDX, GDXJ, MNRS]
+    watch_asx: [NST.AX, EVN.AX, NEM.AX, GMD.AX, RMS.AX, PRU.AX, RRL.AX, CMM.AX]
+  battery_metals_lithium:
+    keywords: [lithium, battery metals, cobalt, graphite, anode]
+    products: [LIT, ACDC, BATT]
+    watch_asx: [PLS.AX, MIN.AX, IGO.AX, LTR.AX, AKE.AX, SYR.AX]
+  copper:
+    keywords: [copper miners]
+    products: [COPX, WIRE]
+    watch_asx: [SFR.AX, 29M.AX, CMM.AX, AIS.AX]
+  defence:
+    keywords: [defence, defense, aerospace, military]
+    products: [ARMR, SHLD, DFEN]
+    watch_asx: [DRO.AX, EOS.AX, ASB.AX, BAB.AX]
+  clean_energy_solar_wind_hydrogen:
+    keywords: [clean energy, solar, wind, hydrogen, renewables]
+    products: [ICLN, TAN, FAN, HJEN, HGEN]
+    watch_asx: [NHC.AX, ORG.AX, IFT.AX]
+  robotics_ai:
+    keywords: [robotics, artificial intelligence, automation]
+    products: [BOTZ, ROBO, RBTZ, ARKQ]
+    watch_asx: [BRN.AX, WTC.AX, APX.AX]
+  cybersecurity:
+    keywords: [cyber security, cybersecurity]
+    products: [BUG, HACK, CIBR]
+    watch_asx: [TNE.AX, DSE.AX]
+  agriculture_food_water:
+    keywords: [agriculture, farming, food, water]
+    products: [FOOD, MOO, PHO, CIBO]
+    watch_asx: [GNC.AX, ELD.AX, NUF.AX, AAC.AX, IPL.AX]
+  semiconductors:
+    keywords: [semiconductor, chips]
+    products: [SOXX, SMH, SEMI]
+    watch_asx: [BRN.AX, 4DS.AX, RFX.AX]
+  space:
+    keywords: [space, satellite]
+    products: [UFO, ARKX]
+    watch_asx: [DRO.AX, EOS.AX]
+  biotech_healthcare:
+    keywords: [biotech, healthcare, genomics]
+    products: [XBI, IBB, ARKG]
+    watch_asx: [CSL.AX, PME.AX, TLX.AX, CUV.AX, NEU.AX, MSB.AX]
+
+# Standing watchlist of providers/issuers whose holdings churn is worth diffing
+# frequently (high ASX exposure + obscure thematic mandates).
+priority_issuers: [sprott, vaneck_us, globalx_au, betashares, vaneck_au, hanetf]

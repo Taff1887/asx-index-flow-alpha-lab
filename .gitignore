@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+*.key
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------------------
+# Data policy
+# ---------------------------------------------------------------------------
+# Raw API pulls and large/blob artefacts are NOT committed (re-fetchable or
+# licensed). Manual drop-ins, the registries and processed outputs ARE tracked
+# so the research state is reproducible without re-scraping.
+data/raw/
+data/interim/
+*.parquet
+*.pdf
+
+# Keep the directory skeleton even when ignoring contents
+!data/raw/.gitkeep
+!data/raw/**/.gitkeep
+!data/interim/.gitkeep
+
+# Track manual ingestion + processed results
+!data/manual/
+!data/processed/
+!reports/
+
+# Figures can get large; keep tables/scorecards, ignore generated pngs by default
+reports/figures/*.png
+!reports/figures/.gitkeep

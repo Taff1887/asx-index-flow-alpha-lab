@@ -1,0 +1,4 @@
+provider,index_name,ticker,company_name,action,announcement_date,effective_date,source_url,confidence
+S&P Dow Jones Indices,S&P/ASX 200,DRO,DroneShield,ADD,2026-06-06,2026-06-20,https://www.spglobal.com/spdji/en/,0.95
+S&P Dow Jones Indices,S&P/ASX 200,XYZ,Example Co,DELETE,2026-06-06,2026-06-20,https://www.spglobal.com/spdji/en/,0.95
+MarketVector,MVIS Global Rare Earth/Strategic Metals,LYC,Lynas Rare Earths,ADD,2026-05-15,2026-05-30,,0.8

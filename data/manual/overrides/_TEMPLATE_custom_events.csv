@@ -1,0 +1,2 @@
+event_id,source_type,provider,issuer,etf_index_name,benchmark,asx_ticker,company_name,event_type,announcement_date,detected_date,effective_date,old_weight,new_weight,confidence_score,source_url_or_file,notes,_product_ticker
+,custom_manual,MarketVector,VanEck,VanEck Rare Earth/Strategic Metals ETF,MVIS Global Rare Earth/Strategic Metals Index,LYC.AX,Lynas Rare Earths,CUSTOM_MANUAL_EVENT,2026-05-15,2026-05-15,2026-05-30,,0.06,0.8,manual note,added per quarterly review,REMX

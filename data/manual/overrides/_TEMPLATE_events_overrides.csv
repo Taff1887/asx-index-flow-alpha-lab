@@ -1,0 +1,2 @@
+event_id,effective_date,confidence_score,tradeable_flag,notes
+abc123def456,2026-06-20,0.95,True,confirmed effective date from provider press release

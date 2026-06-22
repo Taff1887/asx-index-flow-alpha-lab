@@ -1,0 +1,4 @@
+constituent_ticker,constituent_name,weight_pct,shares,market_value,exchange
+PDN.AX,Paladin Energy,0.0812,1234567,9876543,ASX
+BOE.AX,Boss Energy,0.0451,567890,4567890,ASX
+NXE,NexGen Energy,0.0623,234567,7654321,TSX

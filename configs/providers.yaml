@@ -1,0 +1,124 @@
+# Known index providers and ETF issuers used to seed the discovery engine.
+#
+# This is REFERENCE METADATA only (public facts: who they are, where their site
+# is, how holdings are typically distributed). It is NOT holdings data.
+#
+# holdings_access values:
+#   auto    - a stable, parseable holdings file (CSV/XLSX/JSON) is usually
+#             reachable; holdings_downloader can try it.
+#   manual  - holdings exist but are JS-rendered, gated, licensed, or unstable;
+#             user drops the file into data/manual/holdings_snapshots/.
+#   blocked - provider disallows automated access / no public holdings; manual only.
+#
+# Always confirm a provider's terms before automated fetching. When in doubt the
+# engine falls back to the manual ingestion path rather than fabricating data.
+
+index_providers:
+  - key: spdji
+    name: S&P Dow Jones Indices
+    home_url: https://www.spglobal.com/spdji/
+    methodology_hint: https://www.spglobal.com/spdji/en/governance/methodology-and-regulatory-status/
+    holdings_access: manual
+    notes: "S&P/ASX 50/100/200/300, sector & thematic indices. Rebalance announcements public; constituents licensed."
+  - key: msci
+    name: MSCI
+    home_url: https://www.msci.com/indexes
+    methodology_hint: https://www.msci.com/index-methodology
+    holdings_access: manual
+    notes: "MSCI Australia / ACWI / thematic. SAIR (semi-annual index review) Feb/Aug, QIR May/Nov. Pro-forma lists licensed."
+  - key: ftserussell
+    name: FTSE Russell
+    home_url: https://www.lseg.com/en/ftse-russell
+    methodology_hint: https://www.lseg.com/en/ftse-russell/index-resources/methodology
+    holdings_access: manual
+  - key: solactive
+    name: Solactive
+    home_url: https://www.solactive.com/
+    methodology_hint: https://www.solactive.com/indices/
+    holdings_access: manual
+    notes: "Backs many thematic ETFs (Global X etc). Guidelines PDFs public; constituents via factsheets."
+  - key: vettafi
+    name: VettaFi (Indxx/Alerian heritage)
+    home_url: https://vettafi.com/
+    holdings_access: manual
+  - key: marketvector
+    name: MarketVector Indexes (MVIS)
+    home_url: https://www.marketvector.com/
+    methodology_hint: https://www.marketvector.com/indexes
+    holdings_access: manual
+    notes: "Backs VanEck thematics (e.g. MVRARE rare earth, uranium). Index factsheets list constituents."
+  - key: nasdaq
+    name: Nasdaq Global Indexes
+    home_url: https://indexes.nasdaqomx.com/
+    holdings_access: manual
+  - key: indxx
+    name: Indxx
+    home_url: https://www.indxx.com/
+    holdings_access: manual
+  - key: stoxx
+    name: STOXX / Qontigo
+    home_url: https://www.stoxx.com/
+    holdings_access: manual
+  - key: ice
+    name: ICE Data Indices
+    home_url: https://indices.theice.com/
+    holdings_access: blocked
+  - key: bloomberg
+    name: Bloomberg Index Services
+    home_url: https://www.bloomberg.com/professional/products/indices/
+    holdings_access: blocked
+  - key: morningstar
+    name: Morningstar Indexes
+    home_url: https://indexes.morningstar.com/
+    holdings_access: manual
+
+etf_issuers:
+  - key: betashares
+    name: Betashares
+    home_url: https://www.betashares.com.au/
+    fund_list_hint: https://www.betashares.com.au/fund/
+    holdings_access: manual
+    notes: "AU issuer. Per-fund holdings CSVs usually downloadable from the fund page; layout changes -> manual fallback."
+  - key: globalx_au
+    name: Global X ETFs Australia (formerly ETF Securities)
+    home_url: https://www.globalxetfs.com.au/
+    holdings_access: manual
+    notes: "AU thematics: uranium (ATOM), battery tech, hydrogen, copper miners, semiconductors."
+  - key: vaneck_au
+    name: VanEck Australia
+    home_url: https://www.vaneck.com.au/
+    holdings_access: manual
+    notes: "AU + global thematics. Daily holdings per fund page."
+  - key: ishares_au
+    name: iShares (BlackRock) Australia
+    home_url: https://www.blackrock.com/au/
+    holdings_access: manual
+    notes: "Holdings CSV available per fund product page (ajax download link)."
+  - key: globalx_us
+    name: Global X (US, Mirae)
+    home_url: https://www.globalxetfs.com/
+    holdings_access: manual
+  - key: sprott
+    name: Sprott Asset Management
+    home_url: https://sprottetfs.com/
+    holdings_access: manual
+    notes: "URNM (uranium miners), URNJ (junior uranium miners) — hold ASX names (PDN, BOE, DYL, etc.). Daily holdings CSV."
+  - key: vaneck_us
+    name: VanEck (US)
+    home_url: https://www.vaneck.com/us/
+    holdings_access: manual
+    notes: "GDX/GDXJ gold miners, REMX rare earth/strategic metals, NLR nuclear — all hold ASX names."
+  - key: hanetf
+    name: HANetf
+    home_url: https://www.hanetf.com/
+    holdings_access: manual
+    notes: "European thematic issuer (e.g. ARMR defence, URNM Europe, gold miners). Holdings via fund page."
+  - key: amplify
+    name: Amplify ETFs
+    home_url: https://amplifyetfs.com/
+    holdings_access: manual
+  - key: ark
+    name: ARK Invest
+    home_url: https://www.ark-funds.com/
+    holdings_access: auto
+    notes: "Daily holdings CSVs historically downloadable; occasionally hold ASX/CDI names."

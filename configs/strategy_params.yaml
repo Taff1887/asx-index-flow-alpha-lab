@@ -1,0 +1,63 @@
+# Per-strategy parameters. The backtester reads these; tweak here, not in code.
+# Every threshold is intentionally explicit so the research loop can sweep them.
+
+DelayedAnnouncementReaction:
+  enabled: true
+  # Buy index/ETF additions whose IMMEDIATE reaction was small but whose
+  # estimated forced flow is large. Exit on/just before the effective date.
+  max_immediate_reaction_pct: 0.03   # immediate move must be <= 3%
+  min_flow_pressure: 0.5             # estimated buy$ must be >= 0.5x ADV$
+  min_confidence: 0.4                # event realness/confidence floor
+  entry: next_open
+  exit: effective_open               # alt: eff_close_plus1 / eff_close_plus3
+  max_hold_days: 25
+
+HighFlowLowLiquidity:
+  enabled: true
+  min_flow_pressure: 1.0
+  max_adv_dollars: 2000000           # focus on thin names where flow bites
+  entry: next_open
+  exit: eff_close_plus3
+
+HoldingsDiffSignal:
+  enabled: true
+  min_new_weight_pct: 0.001          # >= 10bps new position weight
+  max_immediate_reaction_pct: 0.04
+  entry: detected_next_open          # earliest tradeable after we detect the diff
+  exit: plus5
+
+MethodologyChangeAnticipation:
+  enabled: false                     # research-grade; needs methodology corpus
+  min_qualifying_score: 0.6
+  entry: next_open
+  exit: eff_close_plus5
+
+ThematicIndexPrediction:
+  enabled: false                     # ML candidate predictor (notebook 05)
+  top_n_candidates: 25
+
+RebalanceCalendarTrade:
+  enabled: false                     # only trade pre-announcement if high confidence
+  min_confidence: 0.7
+  days_before_announcement: 5
+
+EffectiveDateFade:
+  enabled: false                     # research only; shorting not assumed available
+  study_only: true
+
+MultiETFStackedFlow:
+  enabled: true
+  min_products: 2                    # ASX name added to >= 2 products in the window
+  window_days: 30
+  entry: next_open
+  exit: eff_close_plus5
+
+ForgottenSmallCapAdd:
+  enabled: true
+  max_adv_dollars: 1000000
+  max_market_cap: 500000000          # <= A$500m
+  max_immediate_reaction_pct: 0.02
+  min_flow_pressure: 0.75
+  min_source_obscurity: 0.5
+  entry: next_open
+  exit: eff_close_plus10
