@@ -78,7 +78,7 @@ class Config:
         return (
             self.env.get("FMP_BASE_URL")
             or os.environ.get("FMP_BASE_URL")
-            or "https://financialmodelingprep.com/api"
+            or "https://financialmodelingprep.com/stable"
         )
 
     @property

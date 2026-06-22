@@ -150,8 +150,8 @@ def build_features(
             prof = profile_cache[sym]
             feat["sector"] = prof.get("sector")
             feat["industry"] = prof.get("industry")
-            if pd.isna(feat["market_cap"]) and prof.get("mktCap"):
-                feat["market_cap"] = prof.get("mktCap")
+            if pd.isna(feat["market_cap"]) and (prof.get("marketCap") or prof.get("mktCap")):
+                feat["market_cap"] = prof.get("marketCap", prof.get("mktCap"))
 
         feat["theme"] = ev.get("_theme")
         feat["fund_aum"] = ev.get("_aum")

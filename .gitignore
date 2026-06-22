@@ -49,3 +49,12 @@ data/interim/
 # Figures can get large; keep tables/scorecards, ignore generated pngs by default
 reports/figures/*.png
 !reports/figures/.gitkeep
+
+# Demo outputs are illustrative (synthetic event set) — regenerate via
+# examples/demo_pipeline.py; never commit them as if they were research results.
+examples/demo_reports/
+examples/demo_work/
+
+# Generated report contents (regenerate from scripts); keep the dir skeleton.
+reports/tables/*.csv
+reports/scorecards/*.csv

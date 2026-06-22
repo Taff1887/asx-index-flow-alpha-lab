@@ -66,13 +66,12 @@ class FMPClient:
         self,
         endpoint: str,
         params: dict[str, Any] | None = None,
-        version: str = "v3",
         force: bool = False,
     ) -> Any:
-        """GET ``{base}/{version}/{endpoint}`` with disk caching. Returns parsed
-        JSON (list/dict) or ``None`` when unavailable offline."""
+        """GET ``{base}/{endpoint}`` (FMP *stable* API) with disk caching.
+        Returns parsed JSON (list/dict) or ``None`` when unavailable offline."""
         params = dict(params or {})
-        cache_path = self._cache_path(f"{version}/{endpoint}", params)
+        cache_path = self._cache_path(endpoint, params)
 
         if not force and self._cache_fresh(cache_path):
             return read_json(cache_path)
@@ -84,7 +83,7 @@ class FMPClient:
             log.warning("Offline and no cache for %s — returning None", endpoint)
             return None
 
-        url = f"{self.base_url}/{version}/{endpoint}"
+        url = f"{self.base_url}/{endpoint.lstrip('/')}"
         call_params = {**params, "apikey": self.api_key}
         last_err: Exception | None = None
         for attempt in range(1, self.max_retries + 1):
@@ -119,13 +118,14 @@ class FMPClient:
 
         Returns columns: date, open, high, low, close, adj_close, volume, vwap,
         dollar_volume. Empty DataFrame (typed) if nothing is available."""
-        params: dict[str, Any] = {}
+        params: dict[str, Any] = {"symbol": symbol}
         if start:
             params["from"] = str(start)
         if end:
             params["to"] = str(end)
-        data = self.get_json(f"historical-price-full/{symbol}", params, force=force)
-        rows = (data or {}).get("historical", []) if isinstance(data, dict) else []
+        # FMP stable: historical-price-eod/full returns a FLAT list of bars.
+        data = self.get_json("historical-price-eod/full", params, force=force)
+        rows = data if isinstance(data, list) else (data or {}).get("historical", []) if isinstance(data, dict) else []
         if not rows:
             return _empty_price_frame()
         df = pd.DataFrame(rows)
@@ -153,7 +153,7 @@ class FMPClient:
         return df
 
     def profile(self, symbol: str, force: bool = False) -> dict[str, Any]:
-        data = self.get_json(f"profile/{symbol}", force=force)
+        data = self.get_json("profile", {"symbol": symbol}, force=force)
         if isinstance(data, list) and data:
             return data[0]
         return {}
@@ -171,13 +171,13 @@ class FMPClient:
                     "company_name": p.get("companyName"),
                     "sector": p.get("sector"),
                     "industry": p.get("industry"),
-                    "market_cap": p.get("mktCap"),
-                    "exchange": p.get("exchangeShortName"),
+                    "market_cap": p.get("marketCap", p.get("mktCap")),
+                    "exchange": p.get("exchange", p.get("exchangeShortName")),
                     "currency": p.get("currency"),
                     "country": p.get("country"),
                     "is_etf": p.get("isEtf"),
                     "is_active": p.get("isActivelyTrading"),
-                    "avg_volume": p.get("volAvg"),
+                    "avg_volume": p.get("averageVolume", p.get("volAvg")),
                 }
             )
         if not records:
@@ -191,7 +191,7 @@ class FMPClient:
 
     def historical_market_cap(self, symbol: str, limit: int = 2000, force: bool = False) -> pd.DataFrame:
         data = self.get_json(
-            f"historical-market-capitalization/{symbol}", {"limit": limit}, force=force
+            "historical-market-capitalization", {"symbol": symbol, "limit": limit}, force=force
         )
         if not isinstance(data, list) or not data:
             return pd.DataFrame(columns=["symbol", "date", "market_cap"])
@@ -201,11 +201,11 @@ class FMPClient:
         df["symbol"] = symbol
         return df[["symbol", "date", "market_cap"]].reset_index(drop=True)
 
-    # -------------------------------------------------- ETF holdings (premium)
+    # ----------------------------------------------------- ETF holdings (stable)
     def etf_holder(self, etf_symbol: str, force: bool = False) -> pd.DataFrame:
-        """CURRENT ETF holdings via v3/etf-holder. Returns asset, name, weight%,
-        shares, market value. Empty if unavailable on your plan."""
-        data = self.get_json(f"etf-holder/{etf_symbol}", version="v3", force=force)
+        """CURRENT ETF holdings via stable etf/holdings. Returns asset, name,
+        weight%, shares, market value. Empty if unavailable on your plan."""
+        data = self.get_json("etf/holdings", {"symbol": etf_symbol}, force=force)
         if not isinstance(data, list) or not data:
             return pd.DataFrame(columns=["asset", "name", "weight_pct", "shares", "market_value"])
         df = pd.DataFrame(data).rename(
@@ -221,26 +221,21 @@ class FMPClient:
         return df[cols].copy()
 
     def etf_holdings_historical(self, etf_symbol: str, as_of: str | date, force: bool = False) -> pd.DataFrame:
-        """HISTORICAL ETF holdings via v4/etf-holdings (premium). Returns empty
-        and logs if the plan/endpoint does not provide it for the date."""
-        data = self.get_json(
-            "etf-holdings", {"symbol": etf_symbol, "date": str(as_of)}, version="v4", force=force
-        )
-        if not isinstance(data, list) or not data:
-            log.info("No v4 etf-holdings for %s @ %s (plan/endpoint?)", etf_symbol, as_of)
-            return pd.DataFrame()
-        return pd.DataFrame(data)
+        """Historical ETF holdings by date are not exposed on the stable plan;
+        use the manual snapshot ingestion path instead. Returns empty."""
+        log.info("Historical etf-holdings for %s @ %s requires manual ingestion", etf_symbol, as_of)
+        return pd.DataFrame()
 
     # ------------------------------------------------------------- discovery
     def search(self, query: str, limit: int = 50, exchange: str | None = None) -> pd.DataFrame:
         params: dict[str, Any] = {"query": query, "limit": limit}
         if exchange:
             params["exchange"] = exchange
-        data = self.get_json("search", params)
+        data = self.get_json("search-symbol", params)
         return pd.DataFrame(data) if isinstance(data, list) and data else pd.DataFrame()
 
     def etf_list(self) -> pd.DataFrame:
-        data = self.get_json("etf/list")
+        data = self.get_json("etf-list")
         return pd.DataFrame(data) if isinstance(data, list) and data else pd.DataFrame()
 
 

@@ -132,7 +132,9 @@ class ASXUniverse:
 
     def symbols(self) -> set[str]:
         if self._symbols is None:
-            data = self.fmp.get_json("symbol/available-traded/list")  # may be premium
+            # FMP stable: full symbol list, filtered to ASX (.AX). Optional —
+            # if unavailable we skip validation rather than reject names.
+            data = self.fmp.get_json("stock-list")
             syms: set[str] = set()
             if isinstance(data, list):
                 for r in data:
