@@ -106,11 +106,73 @@ working paths now exist:
 
 ---
 
+## 3. Multi-index inclusion strategy — a real, significant, costed edge
+
+**Script:** `examples/index_inclusion_backtest.py`. **1,514** real dated
+membership changes since 2005 from FMP (`historical-*-constituent`): S&P 500,
+Nasdaq-100, Dow Jones, plus the verified S&P/ASX 200 adds — **4,878 backtested
+trade-legs** across strategies. Real prices, per-market costs (US 10bps RT / 40bps
+ASX) + a 3x harsh stress, no lookahead. Events without FMP price coverage dropped
+(counted, not hidden).
+
+**Strategies & results (after costs):**
+
+| strategy | n | avg gross | avg net | avg harsh | hit | t-stat | 95% CI (net) | claim |
+|---|---|---|---|---|---|---|---|---|
+| **S1 ADD run-up T‑5→effective (long)** | 642 | +1.19% | **+1.09%** | +0.88% | 57% | **3.08** | (+0.41%, +1.75%) | **True** |
+| S1x same, **market-excess** (minus index ETF) | 635 | +1.10% | +0.99% | +0.78% | 57% | **3.00** | (+0.29%, +1.61%) | **True** |
+| S1 ADD run-up **T‑3**→eff | 647 | +0.47% | +0.37% | +0.16% | 53% | 1.04 | (−0.32%, +1.06%) | False |
+| S1 ADD run-up **T‑1**→eff | 650 | +0.06% | −0.04% | −0.25% | 45% | −0.23 | (−0.40%, +0.38%) | False |
+| S2 ADD post-effective drift eff→+10 (long) | 648 | −0.53% | −0.63% | −0.84% | 45% | −1.28 | (−1.51%, +0.40%) | False |
+| S3 DEL short eff→+10 (short) | 373 | −4.39% | −4.49% | −4.69% | 43% | −1.95 | (−9.44%, −0.74%) | False |
+
+**What it means:**
+
+- **The index-inclusion run-up is real and statistically significant.** Buying an
+  addition ~5 trading days before its effective date and selling at the effective
+  close earns **+1.09% net per event, t‑stat 3.1**, and the 95% bootstrap CI
+  excludes zero. It survives **3x harsher costs** (+0.88%) and is **beta-neutral**
+  — the market-excess version (minus the index ETF over the same window) is almost
+  identical (+0.99%, t=3.0), so it isn't just market drift.
+- **It decays within days — this IS the thesis.** The whole edge is in the first
+  ~2 days after the announcement: by **T‑3 it's +0.37% (insignificant)** and by
+  **T‑1 it's gone (−0.04%)**. The obvious add is arbitraged almost immediately;
+  the only way to capture it is to trade at/just-after the announcement. Wait, and
+  there's nothing left. (Caveat: FMP gives the *effective* date, not the
+  announcement date; "T‑5" proxies "at announcement", which for S&P/Nasdaq is
+  typically ~5 business days before effective. For M&A-driven adds the lead can be
+  shorter, so the very front of the window may not always be tradeable — the decay
+  profile, not a turnkey P&L, is the robust finding.)
+- **No post-inclusion momentum** (S2 = −0.6%) and **deletions rebound, not fall**
+  (S3 short loses 4.4% ⇒ deleted names *bounce* ~+4.4% mean / +1.2% median over 10
+  days — a fat-tailed, contrarian "buy the forced-selling washout" effect worth a
+  closer look, but skew-driven).
+
+**By index (S1 T‑5):** Dow +2.50% (n=31, hit 68%), Nasdaq-100 +1.27% (n=197),
+S&P 500 +0.92% (n=402), **S&P/ASX 200 +0.15% (n=12)**. The effect scales with
+passive AUM mechanically tracking the index — strongest in the Dow/Nasdaq, and
+**weakest in the ASX 200**, consistent with §1's benchmark result that the obvious
+ASX effect is arbitraged.
+
+**By year (S1 T‑5):** positive in **15 of 22 years**; negatives cluster in
+crisis/idiosyncratic years (2008 −2.2%, 2010, 2016, 2018, 2022). Not driven by a
+single year.
+
+**Bottom line:** the forced-flow inclusion edge is genuinely there and survives
+costs — but it is fast (≤2 days) and largest where passive AUM is largest (US
+mega-indices), and faint on the ASX 200. The implication for *this* lab is direct:
+the tradeable ASX opportunity is **not** the well-watched ASX 200 add — it's the
+obscure thematic-ETF flow into thin names (§2), where the same mechanical buying
+hits far less liquidity and far less arbitrage attention.
+
+---
+
 ## Reproduce
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/forced_ownership_map.py        # the overhang map
-.\.venv\Scripts\python.exe examples/asx200_inclusion_study.py     # the benchmark
+.\.venv\Scripts\python.exe scripts/forced_ownership_map.py        # the overhang map (§2)
+.\.venv\Scripts\python.exe examples/asx200_inclusion_study.py     # ASX 200 benchmark (§1)
+.\.venv\Scripts\python.exe examples/index_inclusion_backtest.py   # multi-index backtest (§3)
 .\.venv\Scripts\python.exe scripts/fetch_etf_holdings_fmp.py      # save today's real snapshots
 ```
 
