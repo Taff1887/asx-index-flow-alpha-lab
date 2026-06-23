@@ -165,6 +165,14 @@ URNM + **ISO** S&P/ASX Small Ords, announced ~2 weeks early); **URNJ junior-uran
 Dec 21**. URNJ rule (uranium, free-float US$30m–$3bn, reconstituted Jun/Dec) lets
 you predict adds — see [`uranium_add_candidates.csv`](tables/uranium_add_candidates.csv).
 
+⚠️ **Does the front-run actually work for thematic names? A real test says no.**
+`examples/thematic_inclusion_study.py` on 9 real GDXJ junior-gold inclusions: the
+pre-effective front-run *lost* money (mean −9.7%, abnormal vs gold −3.2%); the
+names fell into the date and rebounded after (+3.4% abnormal eff→+10). Small &
+clustered (n=9) so a case study, not robust — but it warns these dates are
+*monitoring* windows, not auto-buys.
+([`thematic_inclusion_study.csv`](tables/thematic_inclusion_study.csv))
+
 ---
 
 ## How to reproduce

@@ -1,0 +1,10 @@
+ticker,company,review,effective,is_asx,pre_ann_%,frontrun_T-5_to_eff_%,abn_frontrun_%,eff_to_+5_%,abn_eff_to_+10_%,source
+PPTA,Perpetua Resources,2025-03,2025-03-21,False,14.7,13.8,12.6,-2.2,-17.3,prnewswire/perpetua GDXJ Mar-2025
+SPR.AX,Spartan Resources,2025-03,2025-03-21,True,22.1,8.7,7.6,11.5,6.9,stockhead/Spartan GDXJ+AS51 Mar-2025
+ASM,Avino Silver & Gold,2025-09,2025-09-19,False,0.5,6.4,5.3,9.9,11.8,juniorminingnetwork Avino GDXJ Sep-2025
+VOXR,Vox Royalty,2026-03,2026-03-20,False,-13.2,-12.5,-2.2,-0.8,4.1,stocktitan/JMN Vox GDXJ Mar-2026
+ODV,Osisko Development,2026-03,2026-03-20,False,-22.3,-23.5,-13.2,3.5,12.1,stocktitan Osisko GDXJ Mar-2026
+ITRG,Integra Resources,2026-03,2026-03-20,False,-26.0,-19.3,-9.0,-1.2,8.5,prnewswire Integra GDXJ Mar-2026
+USAS,Americas Gold & Silver,2026-03,2026-03-20,False,-24.8,-26.9,-16.6,2.2,-1.4,globeandmail USAS GDXJ Mar-2026
+USAU,US Gold Corp,2026-03,2026-03-20,False,-22.9,-15.6,-5.3,0.4,5.8,cruxinvestor US Gold GDXJ Mar-2026
+SNWGF,Snowline Gold,2026-03,2026-03-20,False,-17.2,-18.5,-8.2,1.1,-0.3,globenewswire Snowline GDXJ Mar-2026

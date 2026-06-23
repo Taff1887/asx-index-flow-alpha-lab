@@ -102,6 +102,11 @@ in the share-count data. Verify against the register before believing it.
 - **mid-Dec → Dec 21:** URNJ/URNM junior-uranium reconstitution (the big one for
   the thin uranium names).
 
+⚠️ **But a real test (§7d) found the pre-effective front-run LOST money for
+thematic junior-gold inclusions** (they fell in, rebounded after). Treat these
+dates as *monitoring* windows, not auto-buys — confirm with the accumulation
+detector and watch for the post-effective rebound rather than assuming a run-up.
+
 ### How to actually catch the next AGE trade
 
 Your AGE win came from knowing URNJ *had to keep buying*. The trustworthy version
@@ -299,6 +304,33 @@ the added names are small/thin where the forced buying bites.
 
 ---
 
+## 7d. Did the front-run actually work for thematic ETFs? (a real test says NO)
+
+`examples/thematic_inclusion_study.py` tests the calendar logic on **9 real,
+sourced GDXJ (junior gold) inclusions** — the only thematic events with public
+dated records — measuring the price path around the effective date, abnormal vs
+gold (GLD). ([`thematic_inclusion_study.csv`](reports/tables/thematic_inclusion_study.csv))
+
+| window | mean | median | positive |
+|---|---|---|---|
+| front-run (T‑5 → effective) | **−9.7%** | −15.6% | 3/9 |
+| …abnormal vs gold | **−3.2%** | −5.3% | 3/9 |
+| post-effective (eff → +10), abnormal | **+3.4%** | +5.8% | 6/9 |
+
+**The pre-effective front-run LOST money for these names** — they *fell into* the
+inclusion and **rebounded after**, the *opposite* of the large-cap run-up. So the
+"buy before the forced buying" idea does **not** generalize to thematic junior
+miners on this evidence. Honest caveats: n=9, 7 clustered in the Mar‑2026 review
+(a junior-gold drawdown), only 1 ASX name (Spartan — which *did* work, +7.6%). A
+case study, not robust — but a clear warning not to assume the thematic front-run.
+
+**Takeaway:** the calendar (§7c) is for *awareness and monitoring* the forced
+flow, not a license to blindly buy ahead of the effective date. For volatile
+junior miners, name-specific moves swamp the index flow, and this sample even
+hints at a post-effective rebound rather than a pre-effective run-up.
+
+---
+
 ## 8. What does NOT work (honest controls)
 
 - **Post-inclusion momentum** — additions don't keep rising after the effective
@@ -335,6 +367,7 @@ becomes real ASX flow data; (2) drop manual holdings/announcement CSVs into
 python examples/asx200_inclusion_study.py     # Finding 1 (ASX 200 benchmark)
 python examples/index_inclusion_backtest.py   # Findings 2,5 (the big backtest)
 python examples/event_path_study.py           # Finding 3 (before/after CAAR curve)
+python examples/thematic_inclusion_study.py    # §7d — did the thematic front-run work?
 python examples/make_figures.py               # rebuild the other charts
 python scripts/universal_ownership_map.py     # Finding 4 — ALL 274 ETFs x 393 ASX stocks
 python scripts/etf_rebalance_calendar.py      # §7c — next rebalance dates + watch windows
