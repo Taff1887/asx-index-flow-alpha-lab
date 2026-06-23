@@ -76,3 +76,4 @@ reports/scorecards/*.csv
 !reports/tables/asx_etf_scanner.csv
 !reports/tables/asx_etf_universe.csv
 !reports/tables/event_path_caar.csv
+!reports/tables/universal_ownership_map.csv

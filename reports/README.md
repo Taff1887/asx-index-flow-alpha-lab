@@ -117,19 +117,41 @@ detector.
 
 ---
 
-## 2. Where the ASX opportunity actually lives — forced-ownership overhang
+## 2. Universal forced-ownership map — every ASX stock × ALL ETFs
 
-Since the *obvious* ASX 200 add has no tradeable edge (+0.15%, above), the real
-target is the *obscure* thematic-ETF flow into thin names. Current real holdings
-of 20 global thematic ETFs → ASX constituents, ranked by ETF ownership as a share
-of float. ([`forced_ownership_map.csv`](tables/forced_ownership_map.csv))
+`scripts/universal_ownership_map.py` unions **all 274 ETFs** (every ASX-listed ETF
++ the global thematic/sector set) and aggregates total ETF ownership for **all 393
+ASX stocks** any ETF holds — no theme cherry-picking. (ETF-in-ETF holdings and
+cash/FX lines filtered.) ([`universal_ownership_map.csv`](tables/universal_ownership_map.csv))
 
 ![forced ownership](figures/fig_forced_ownership.png)
 
-Uranium juniors are heavily owned by a handful of foreign passive products —
-Peninsula Energy ~47%, Deep Yellow ~22%, Paladin ~20% of shares outstanding, many
-needing 100+ days of normal volume to unwind. That is the precise setup for
-under-priced forced flow when those ETFs reconstitute.
+**Highest ETF ownership (% of shares outstanding) — across *all* ETFs:**
+
+| ASX | company | #ETFs | % of float | ADV $m | days-to-exit |
+|---|---|---|---|---|---|
+| BRE | Brazilian Rare Earths | 5 | 85%* | 3.0 | 2113 |
+| PEN | Peninsula Energy | 4 | 50% | 1.6 | 125 |
+| LOT | Lotus Resources | 6 | 28% | 5.0 | 55 |
+| DYL | Deep Yellow | 15 | 26% | 10.6 | 206 |
+| PDN | Paladin Energy | 17 | 25% | 35.3 | 145 |
+| BOE | Boss Energy | 7 | 23% | 8.2 | 83 |
+| RMS | Ramelius Resources | 24 | 11% | 33.8 | 108 |
+| MGR | Mirvac (REIT) | 22 | 10% | 26.0 | 132 |
+
+Even across **every** ETF, the uranium juniors genuinely top the %-of-float
+ranking — that's the real answer, not a uranium bias. (*BRE 85% is a likely
+low-free-float/IPO data quirk — verify.)
+
+**Held by the MOST ETFs (breadth — the mega-caps everyone tracks):** BHP (33),
+RIO (31), FMG (30), Transurban (29), PLS (28), Woodside/Medibank/Evolution (27),
+Vicinity/Westpac/Telstra/Northern Star (26), CBA/ANZ/QBE (25). Big % is low (BHP
+5%) because they're huge — but the breadth means *every* broad-ETF inflow buys them.
+
+**Thinnest names with the biggest overhang (ADV < $5m):** BRE, Berkeley Energia
+(613 days), HomeCo Daily Needs REIT, Vulcan Steel, Bannerman, Rural Funds, plus a
+cluster of small REITs (BWP, Growthpoint, Charter Hall Social Infra, Waypoint,
+Centuria Industrial) — the under-watched corner where forced flow bites hardest.
 
 ---
 

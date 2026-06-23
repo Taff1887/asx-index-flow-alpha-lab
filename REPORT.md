@@ -20,7 +20,7 @@ changes. As of 23 June 2026. Repo:
 4. [Finding 1 — the obvious effect is arbitraged](#4-finding-1--the-obvious-index-effect-is-arbitraged)
 5. [Finding 2 — multi-index inclusion backtest](#5-finding-2--multi-index-inclusion-backtest-the-proven-core)
 6. [Finding 3 — the standout edge: deletion rebound](#6-finding-3--the-standout-edge-deletion-rebound)
-7. [Finding 4 — where the ASX money lives: overhang + scanner](#7-finding-4--where-the-asx-money-lives-forced-ownership-overhang--scanner)
+7. [Finding 4 — universal map: every ASX stock × ALL ETFs](#7-finding-4--universal-forced-ownership-map-every-asx-stock--all-etfs)
 8. [What does NOT work](#8-what-does-not-work-honest-controls)
 9. [Data limits & what unblocks it](#9-data-limits--what-unblocks-it)
 10. [Reproduce & repo map](#10-reproduce--repo-map)
@@ -190,30 +190,40 @@ fat-tailed and largely beta — the abnormal, average effect is ~+0.5%.
 
 ---
 
-## 7. Finding 4 — where the ASX money lives: forced-ownership overhang + scanner
+## 7. Finding 4 — universal forced-ownership map: every ASX stock × ALL ETFs
 
-`forced_ownership_map.py` / `flow_scanner.py` pull **current real holdings** of 89
-global ETFs and aggregate per ASX name. Thin uranium/critical-mineral names carry
-extreme foreign passive overhang.
+`scripts/universal_ownership_map.py` unions **all 274 ETFs** (every ASX-listed ETF
++ the global thematic/sector set) and aggregates total ETF ownership for **all 393
+ASX stocks** any ETF holds. No theme cherry-picking; ETF-in-ETF and cash/FX lines
+filtered. ([`universal_ownership_map.csv`](reports/tables/universal_ownership_map.csv))
 
 ![forced ownership](reports/figures/fig_forced_ownership.png)
 
-**Top of the broad scan (89 ETFs → 330 ASX names), by forced-flow score:**
+**Highest ETF ownership (% of float), across all ETFs:**
 
-| ASX | company | #ETFs | % float | ADV $m | exit days | score |
-|---|---|---|---|---|---|---|
-| EVN | Evolution Mining | 11 | 6.0% | 107 | 72 | 0.96 |
-| GMD | Genesis Minerals | 9 | 5.8% | 31 | 65 | 0.95 |
-| DYL | Deep Yellow | 6 | 22.0% | 10.6 | 174 | 0.94 |
-| PDN | Paladin Energy | 6 | 20.2% | 35.3 | 119 | 0.94 |
-| RMS | Ramelius Resources | 8 | 6.7% | 34 | 66 | 0.93 |
-| TCL | Transurban (infra) | 9 | 2.5% | 90 | 62 | 0.92 |
-| PEN | Peninsula Energy | 3 | 47.2% | 1.6 | 118 | 0.93 |
+| ASX | company | #ETFs | % float | ADV $m | days-to-exit |
+|---|---|---|---|---|---|
+| BRE | Brazilian Rare Earths | 5 | 85%* | 3.0 | 2113 |
+| PEN | Peninsula Energy | 4 | 50% | 1.6 | 125 |
+| LOT | Lotus Resources | 6 | 28% | 5.0 | 55 |
+| DYL | Deep Yellow | 15 | 26% | 10.6 | 206 |
+| PDN | Paladin Energy | 17 | 25% | 35.3 | 145 |
+| BOE | Boss Energy | 7 | 23% | 8.2 | 83 |
+| RMS | Ramelius Resources | 24 | 11% | 33.8 | 108 |
+| MGR | Mirvac (REIT) | 22 | 10% | 26.0 | 132 |
 
-The score blends overhang × days-to-exit × #ETFs × inflow-sensitivity
-(`inflow5_days` = days of the stock's own volume the ETFs must buy on a +5% inflow
-to each holding fund — the AGE/URNJ math). Full list:
-[`reports/tables/flow_scanner.csv`](reports/tables/flow_scanner.csv).
+Even across **every** ETF the uranium juniors top the %-of-float ranking — the
+real answer, not a uranium bias. (*BRE 85% likely a low-free-float/IPO data quirk.)
+
+**Held by the MOST ETFs (breadth):** BHP (33), RIO (31), FMG (30), Transurban (29),
+PLS (28), Woodside/Medibank/Evolution (27), Vicinity/Westpac/Telstra/Northern Star
+(26), CBA/ANZ/QBE (25). Low % (mega-caps) but every broad-ETF inflow buys them.
+
+**Thinnest + biggest overhang (ADV<$5m):** BRE, Berkeley Energia (613 days),
+HomeCo Daily Needs REIT, Vulcan Steel, Bannerman, Rural Funds, and a cluster of
+small REITs (BWP, Growthpoint, Charter Hall Social Infra, Waypoint, Centuria
+Industrial). The two narrower scans (`flow_scanner.py` 89 global ETFs;
+`asx_etf_scanner.py` 185 ASX ETFs) remain for the per-channel view.
 
 ---
 
@@ -286,9 +296,9 @@ python examples/asx200_inclusion_study.py     # Finding 1 (ASX 200 benchmark)
 python examples/index_inclusion_backtest.py   # Findings 2,5 (the big backtest)
 python examples/event_path_study.py           # Finding 3 (before/after CAAR curve)
 python examples/make_figures.py               # rebuild the other charts
-python scripts/forced_ownership_map.py        # Finding 4 (overhang)
-python scripts/flow_scanner.py                # broad 89-ETF (global) scan
-python scripts/asx_etf_scanner.py             # §7b — ALL 185 ASX-listed ETFs
+python scripts/universal_ownership_map.py     # Finding 4 — ALL 274 ETFs x 393 ASX stocks
+python scripts/flow_scanner.py                # narrower: 89 global ETFs
+python scripts/asx_etf_scanner.py             # narrower: ALL 185 ASX-listed ETFs
 python scripts/next_trades.py                 # forward suggested-trades report
 python scripts/fetch_etf_holdings_fmp.py      # daily: accrue real holdings history
 python scripts/detect_etf_accumulation.py     # live "being bought now" signal

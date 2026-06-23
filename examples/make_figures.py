@@ -28,7 +28,12 @@ def main() -> int:
     summ = pd.read_csv(t / "inclusion_strategy_summary.csv")
     by_idx = pd.read_csv(t / "inclusion_runup_by_index.csv")
     by_yr = pd.read_csv(t / "inclusion_runup_by_year.csv")
-    own = pd.read_csv(t / "forced_ownership_map.csv")
+    # prefer the universal map (all ETFs x all ASX stocks); fall back to the old one
+    if (t / "universal_ownership_map.csv").exists():
+        own = pd.read_csv(t / "universal_ownership_map.csv").rename(
+            columns={"etf_pct_float": "etf_pct_of_shares_out"})
+    else:
+        own = pd.read_csv(t / "forced_ownership_map.csv")
 
     # 1) decay by entry lag
     lag = {r["strategy"]: r["avg_net_%"] for _, r in summ.iterrows()}
@@ -71,8 +76,8 @@ def main() -> int:
     labels = [f"{r.asx_ticker}  {str(r.company)[:18]}" for r in top.itertuples()]
     fig, ax = plt.subplots(figsize=(7.2, 3.6))
     ax.barh(labels, top["pct"], color=BLUE)
-    ax.set_xlabel("% of shares outstanding held by foreign thematic ETFs")
-    ax.set_title("Forced-ownership overhang in thin ASX names (real holdings)")
+    ax.set_xlabel("% of shares outstanding held by ETFs")
+    ax.set_title("Forced-ownership overhang — all 274 ETFs x all ASX stocks (top 10)")
     for i, v in enumerate(top["pct"]):
         ax.text(v + 0.4, i, f"{v:.1f}%", va="center", fontsize=8)
     fig.tight_layout(); fig.savefig(figs / "fig_forced_ownership.png"); plt.close(fig)
