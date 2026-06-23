@@ -68,3 +68,6 @@ reports/scorecards/*.csv
 !reports/tables/forced_ownership_map.csv
 !reports/tables/asx200_inclusion_events.csv
 !reports/tables/asx200_inclusion_ledger.csv
+!reports/tables/inclusion_runup_by_liquidity.csv
+!reports/tables/flow_scanner.csv
+!reports/tables/etf_accumulation.csv

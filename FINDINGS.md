@@ -81,7 +81,50 @@ position-sizing precision; the *ranking* is the signal.
 
 ---
 
-## Why we can't (yet) backtest #2 — and what unblocks it
+## 4. The playbook — where the money is (and isn't)
+
+Real, costed edges ranked by how exploitable and how proven:
+
+1. **Index DELETION rebound — proven, +EV.** Buy the deleted name at the
+   effective close, hold ~10 trading days. **373 real US events: +4.3% mean /
+   +1.0% median net, hit 56%, 95% CI (+0.5%, +9.2%)** — excludes zero. Forced
+   selling overshoots into the effective date, then snaps back. Fat right tail
+   (a few deleted names rocket), so size small and use stops; tail risk is
+   continued decline / delisting. (`fig_deletion_rebound.png`)
+2. **Index INCLUSION run-up — proven but fast.** Buy the addition at/just after
+   the announcement, sell at the effective close: **+1.09% net, t=3.1** — but
+   gone within ~2 days (T‑3 ≈ 0). Only works if you act on the announcement
+   immediately. (`fig_inclusion_decay.png`)
+3. **Thin-cap ETF forced-flow — the AGE/URNJ pattern — live only.** Thematic ETFs
+   must keep buying thin constituents as they take inflows or reconstitute; the
+   overhang is huge (PEN 47%, DYL 22% of float). This is **not** historically
+   backtestable — no free feed has ETF-flow or thin-cap index-membership history
+   — so it's traded live: the **scanner** ranks candidates and the **accumulation
+   detector** confirms an in-progress buy from daily holdings diffs.
+
+**What does NOT work (tested honestly):**
+- Post-inclusion momentum — additions don't keep rising after the effective date (−0.6%).
+- Shorting deletions — they rebound (that's edge #1).
+- "Thinner large-cap adds drift more" — false; the liquidity gradient is flat-to-
+  opposite within US large caps (`fig_inclusion_by_liquidity.png`). The thin-cap
+  edge is a *different regime* (junior/thematic names), not large-cap adds.
+- Obvious S&P/ASX 200 adds — arbitraged (+0.15%).
+
+### Live tools (real, current data)
+- `scripts/flow_scanner.py` → [`tables/flow_scanner.csv`](reports/tables/flow_scanner.csv):
+  32 global thematic/mining ETFs → 176 ASX names, ranked by a forced-flow score
+  (overhang × days-to-exit × #ETFs × inflow-sensitivity). **AGE currently ranks
+  #7**, behind DYL, PDN, BMN, PEN.
+- `scripts/fetch_etf_holdings_fmp.py` (run daily) + `scripts/detect_etf_accumulation.py`
+  → catches the *actual* in-progress buying: net Δshares across ETFs ÷ the stock's
+  ADV. This is the AGE trade, mechanised — it goes live once two daily snapshots exist.
+
+> A note on what this is: anticipating mechanical, publicly-disclosed index/ETF
+> rebalancing flow is standard index-rebalance arbitrage — legitimate and legal
+> (the rules are public; this is not insider trading or broker front-running). The
+> repo does not implement anything manipulative (no closing-auction games, etc.).
+
+## Why we can't (yet) backtest #3 — and what unblocks it
 
 To backtest the overhang/flow edge you need **dated holdings history** (to know
 when each ETF added/grew a position) or **dated index-change announcements**.

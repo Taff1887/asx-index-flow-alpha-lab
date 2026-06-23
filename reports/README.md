@@ -44,6 +44,40 @@ core thesis, quantified.)
 ![by year](figures/fig_inclusion_by_year.png)
 ([`inclusion_runup_by_year.csv`](tables/inclusion_runup_by_year.csv))
 
+### The standout edge: index-DELETION rebound (buy the forced-selling washout)
+Buy the deleted name at the effective close, hold ~10 days. **373 real events:
++4.3% mean / +1.0% median net, hit 56%, 95% CI (+0.5%, +9.2%)** — excludes zero.
+Fat right tail, so size small + use stops.
+![deletion rebound](figures/fig_deletion_rebound.png)
+
+### Honest control: thinner large-cap adds do NOT drift more
+![by liquidity](figures/fig_inclusion_by_liquidity.png)
+([`inclusion_runup_by_liquidity.csv`](tables/inclusion_runup_by_liquidity.csv))
+
+---
+
+## 2b. Live forced-flow scanner — the AGE/URNJ pattern
+
+`scripts/flow_scanner.py` scans 32 global thematic/mining ETFs → 176 ASX names,
+ranked by a forced-flow score (overhang × days-to-exit × #ETFs × inflow
+sensitivity). ([`flow_scanner.csv`](tables/flow_scanner.csv)). Top of the list:
+
+| ASX | company | #ETFs | ETF own % float | ADV $m | exit days @20% ADV | score |
+|---|---|---|---|---|---|---|
+| DYL | Deep Yellow | 4 | 21.7% | 10.6 | 172 | 0.96 |
+| PDN | Paladin Energy | 4 | 19.9% | 35.3 | 117 | 0.95 |
+| BMN | Bannerman Energy | 3 | 18.6% | 3.8 | 193 | 0.94 |
+| PEN | Peninsula Energy | 3 | 47.2% | 1.6 | 118 | 0.93 |
+| **AGE** | **Alligator Energy** | **3** | **9.2%** | **0.7** | **116** | **0.92** |
+| LOT | Lotus Resources | 3 | 24.6% | 5.0 | 48 | 0.87 |
+| EL8 | Elevate Uranium | 2 | 11.4% | 0.4 | 139 | 0.88 |
+
+`scripts/detect_etf_accumulation.py` then confirms an *in-progress* buy from the
+daily holdings snapshots (net Δshares ÷ ADV) — the AGE trade, mechanised.
+
+**Full strategy playbook (what works, what doesn't, and the legal framing):**
+see [`../FINDINGS.md`](../FINDINGS.md) §4.
+
 ---
 
 ## 2. Where the ASX opportunity actually lives — forced-ownership overhang

@@ -1,4 +1,5 @@
 strategy,n,avg_gross_%,avg_net_%,avg_harsh_%,median_net_%,hit_rate,t_stat,ci95_net_low_%,ci95_net_high_%,claim_alpha
+S4_DEL_long_eff_+10,373,4.393,4.293,4.093,1.038,0.558,1.87,0.542,9.24,True
 S1_ADD_runup_T-5,642,1.193,1.088,0.88,0.669,0.572,3.08,0.412,1.752,True
 S1x_ADD_excess_T-5,635,1.097,0.991,0.784,0.653,0.567,3.0,0.293,1.607,True
 S1x_ADD_excess_T-3,640,0.598,0.492,0.284,0.382,0.531,1.44,-0.172,1.156,False

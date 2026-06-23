@@ -37,6 +37,7 @@ from index_flow.config import load_config
 from index_flow.fmp_client import FMPClient
 from index_flow.price_data import PriceStore
 from index_flow.diagnostics import bootstrap_ci, claims_gate, compute_metrics
+from index_flow.liquidity import adv_dollars
 from index_flow.backtester import LEDGER_COLUMNS
 from index_flow.utils import get_logger, stable_hash, write_csv
 
@@ -153,6 +154,9 @@ def backtest(events: pd.DataFrame, store: PriceStore) -> pd.DataFrame:
         base = COST_RT_BPS[e["market"]] / 1e4
         harsh = COST_RT_BPS_HARSH[e["market"]] / 1e4
         bm = bench.get(e["market"])
+        # pre-event ADV ($) measured 6 bars before the effective date (so the
+        # event run-up itself doesn't contaminate the liquidity estimate)
+        advd = adv_dollars(px, px["date"].iloc[max(0, epos - 6)], 63)
 
         def add_trade(strategy, gross, direction, exposure):
             if gross is None or np.isnan(gross):
@@ -164,7 +168,7 @@ def backtest(events: pd.DataFrame, store: PriceStore) -> pd.DataFrame:
                 strategy=strategy, event_id=stable_hash(strategy, sym, e["effective_date"]),
                 asx_ticker=sym, direction=direction, gross_return=direction * gross,
                 net_return=net, harsh_net_return=hnet, pnl_net=net * CAPITAL,
-                exposure_days=exposure, participation=0.0, capped=False,
+                exposure_days=exposure, participation=0.0, capped=False, adv_dollars=advd,
                 rejected=False, reject_reason="", exit_date=e["effective_date"],
                 year=e["effective_date"].year, theme=e["index"], provider=e["market"],
             )
@@ -187,7 +191,9 @@ def backtest(events: pd.DataFrame, store: PriceStore) -> pd.DataFrame:
             if c_p10:
                 add_trade("S2_ADD_postdrift_eff_+10", c_p10 / c_eff - 1.0, +1, 10)
         elif e["action"] == "DEL" and c_p10:
+            # deletions are force-SOLD into the effective date; test both sides
             add_trade("S3_DEL_short_eff_+10", c_p10 / c_eff - 1.0, -1, 10)
+            add_trade("S4_DEL_long_eff_+10", c_p10 / c_eff - 1.0, +1, 10)  # buy the washout
     return pd.DataFrame(rows, columns=LEDGER_COLUMNS)
 
 
@@ -250,6 +256,31 @@ def main() -> int:
         write_csv(by_year, cfg.path("tables") / "inclusion_runup_by_year.csv")
         print(f"\n--- {best}: by index ---"); print(by_index.to_string(index=False))
         print(f"\n--- {best}: by year ---"); print(by_year.to_string(index=False))
+
+        # LIQUIDITY GRADIENT: is the forced-flow run-up bigger in THINNER names?
+        gl = g.copy()
+        gl["adv_m"] = pd.to_numeric(gl["adv_dollars"], errors="coerce") / 1e6
+        gl = gl.dropna(subset=["adv_m"])
+        bins = [0, 5, 20, 50, 150, 1e9]
+        labels = ["<$5m", "$5-20m", "$20-50m", "$50-150m", ">$150m"]
+        gl["liq_bucket"] = pd.cut(gl["adv_m"], bins=bins, labels=labels)
+        by_liq = gl.groupby("liq_bucket", observed=True).apply(
+            lambda x: pd.Series({"n": len(x),
+                                 "avg_net_%": round(100 * pd.to_numeric(x["net_return"]).mean(), 3),
+                                 "hit": round((pd.to_numeric(x["net_return"]) > 0).mean(), 3)}),
+            include_groups=False).reset_index()
+        write_csv(by_liq, cfg.path("tables") / "inclusion_runup_by_liquidity.csv")
+        print(f"\n--- {best}: by liquidity (avg daily $ traded, pre-event) ---")
+        print(by_liq.to_string(index=False))
+
+    # Deletion rebound (buy the forced-selling washout) summary
+    s4 = ledger[ledger["strategy"] == "S4_DEL_long_eff_+10"]
+    if not s4.empty:
+        m4 = compute_metrics(s4); lo4, hi4 = bootstrap_ci(s4["net_return"])
+        print("\n--- S4 DEL rebound (BUY deleted name at eff close, hold +10) ---")
+        print(f"  n={m4['n_trades']}  avg_net={100*m4['avg_return_after_costs']:.2f}%  "
+              f"median={100*m4['median_return']:.2f}%  hit={m4['hit_rate']:.2f}  "
+              f"95% CI ({100*lo4:.2f}%, {100*hi4:.2f}%)")
 
     print("\nWritten: reports/tables/inclusion_strategy_summary.csv, inclusion_ledger.csv,")
     print("         inclusion_runup_by_index.csv, inclusion_runup_by_year.csv")

@@ -77,6 +77,38 @@ def main() -> int:
         ax.text(v + 0.4, i, f"{v:.1f}%", va="center", fontsize=8)
     fig.tight_layout(); fig.savefig(figs / "fig_forced_ownership.png"); plt.close(fig)
 
+    # 5) liquidity gradient of the run-up (does thinness amplify it?)
+    liq_p = t / "inclusion_runup_by_liquidity.csv"
+    if liq_p.exists():
+        liq = pd.read_csv(liq_p)
+        fig, ax = plt.subplots(figsize=(6.4, 3.0))
+        cols = [GREEN if v >= 0 else RED for v in liq["avg_net_%"]]
+        ax.bar(liq["liq_bucket"].astype(str), liq["avg_net_%"], color=cols)
+        ax.axhline(0, color="black", lw=0.8)
+        ax.set_ylabel("avg net run-up (%)")
+        ax.set_title("Run-up by name liquidity (US adds): thinness does NOT amplify it")
+        for i, (v, n) in enumerate(zip(liq["avg_net_%"], liq["n"])):
+            ax.text(i, v + 0.04, f"{v:+.2f}%\nn={int(n)}", ha="center", fontsize=8)
+        fig.tight_layout(); fig.savefig(figs / "fig_inclusion_by_liquidity.png"); plt.close(fig)
+
+    # 6) deletion-rebound distribution (buy the forced-selling washout)
+    led_p = t / "inclusion_ledger.csv"
+    if led_p.exists():
+        led = pd.read_csv(led_p)
+        s4 = pd.to_numeric(led[led["strategy"] == "S4_DEL_long_eff_+10"]["net_return"],
+                           errors="coerce").dropna() * 100
+        if len(s4):
+            s4c = s4.clip(-30, 50)
+            fig, ax = plt.subplots(figsize=(6.4, 3.0))
+            ax.hist(s4c, bins=40, color=BLUE, alpha=0.85)
+            ax.axvline(0, color="black", lw=0.8)
+            ax.axvline(s4.mean(), color=GREEN, lw=1.5, label=f"mean {s4.mean():+.1f}%")
+            ax.axvline(s4.median(), color="#854F0B", lw=1.5, ls="--", label=f"median {s4.median():+.1f}%")
+            ax.set_xlabel("net return, buy deletion at eff close, hold +10 days (%)")
+            ax.set_ylabel("count"); ax.legend(fontsize=9)
+            ax.set_title(f"Deletion rebound (n={len(s4)}): positive, fat right tail")
+            fig.tight_layout(); fig.savefig(figs / "fig_deletion_rebound.png"); plt.close(fig)
+
     print("Wrote figures to", figs)
     for p in sorted(figs.glob("fig_*.png")):
         print(" ", p.name)
