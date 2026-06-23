@@ -22,6 +22,20 @@ built to hunt the *obscure* end of the spectrum:
 > *Which global indices or ETFs can force buying into ASX stocks, and which of
 > those flows are underpriced?*
 
+## 📊 Results
+
+Real-data findings (charts + tables) are in **[reports/README.md](reports/README.md)**;
+full methodology and caveats in **[FINDINGS.md](FINDINGS.md)**. Headlines:
+
+- **Index-inclusion run-up** across S&P 500 + Nasdaq‑100 + Dow + ASX 200 (1,514
+  real events): **+1.09% net per event, t‑stat 3.08**, survives 3× costs,
+  beta-neutral — but it **decays within ~2 days** of the announcement.
+- It **scales with passive AUM** (Dow +2.5% → ASX 200 just +0.15%): the obvious
+  ASX add is already arbitraged.
+- The real ASX edge is the **obscure thematic-ETF overhang** — e.g. Peninsula
+  Energy ~47%, Deep Yellow ~22%, Paladin ~20% of shares outstanding held by
+  foreign uranium ETFs.
+
 ## What it does
 
 1. Maintains an **index/ETF registry** (`reports/tables/index_registry.csv`,

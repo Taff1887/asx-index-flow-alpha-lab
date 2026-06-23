@@ -58,3 +58,13 @@ examples/demo_work/
 # Generated report contents (regenerate from scripts); keep the dir skeleton.
 reports/tables/*.csv
 reports/scorecards/*.csv
+
+# ...but DO commit the published real-result artefacts shown in reports/README.md
+!reports/figures/fig_*.png
+!reports/tables/inclusion_strategy_summary.csv
+!reports/tables/inclusion_ledger.csv
+!reports/tables/inclusion_runup_by_index.csv
+!reports/tables/inclusion_runup_by_year.csv
+!reports/tables/forced_ownership_map.csv
+!reports/tables/asx200_inclusion_events.csv
+!reports/tables/asx200_inclusion_ledger.csv
