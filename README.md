@@ -24,8 +24,10 @@ built to hunt the *obscure* end of the spectrum:
 
 ## 📊 Results
 
-Real-data findings (charts + tables) are in **[reports/README.md](reports/README.md)**;
-full methodology and caveats in **[FINDINGS.md](FINDINGS.md)**. Headlines:
+**→ [REPORT.md](REPORT.md) — the full consolidated report (findings, charts,
+tables, and suggested trades) in one file.** Also: charts + tables in
+**[reports/README.md](reports/README.md)**, methodology in **[FINDINGS.md](FINDINGS.md)**.
+Headlines:
 
 - **Index-inclusion run-up** across S&P 500 + Nasdaq‑100 + Dow + ASX 200 (1,514
   real events): **+1.09% net per event, t‑stat 3.08**, survives 3× costs,
