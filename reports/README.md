@@ -60,23 +60,58 @@ Fat right tail, so size small + use stops.
 
 `scripts/flow_scanner.py` scans 32 global thematic/mining ETFs → 176 ASX names,
 ranked by a forced-flow score (overhang × days-to-exit × #ETFs × inflow
-sensitivity). ([`flow_scanner.csv`](tables/flow_scanner.csv)). Top of the list:
+sensitivity). Now **89 ETFs across every theme → 330 ASX names**
+([`flow_scanner.csv`](tables/flow_scanner.csv)). Top of the list:
 
 | ASX | company | #ETFs | ETF own % float | ADV $m | exit days @20% ADV | score |
 |---|---|---|---|---|---|---|
-| DYL | Deep Yellow | 4 | 21.7% | 10.6 | 172 | 0.96 |
-| PDN | Paladin Energy | 4 | 19.9% | 35.3 | 117 | 0.95 |
-| BMN | Bannerman Energy | 3 | 18.6% | 3.8 | 193 | 0.94 |
-| PEN | Peninsula Energy | 3 | 47.2% | 1.6 | 118 | 0.93 |
-| **AGE** | **Alligator Energy** | **3** | **9.2%** | **0.7** | **116** | **0.92** |
-| LOT | Lotus Resources | 3 | 24.6% | 5.0 | 48 | 0.87 |
-| EL8 | Elevate Uranium | 2 | 11.4% | 0.4 | 139 | 0.88 |
+| EVN | Evolution Mining | 11 | 6.0% | 107 | 72 | 0.96 |
+| GMD | Genesis Minerals | 9 | 5.8% | 31 | 65 | 0.95 |
+| DYL | Deep Yellow | 6 | 22.0% | 10.6 | 174 | 0.94 |
+| PDN | Paladin Energy | 6 | 20.2% | 35.3 | 119 | 0.94 |
+| RMS | Ramelius Resources | 8 | 6.7% | 34 | 66 | 0.93 |
+| TCL | Transurban (infra) | 9 | 2.5% | 90 | 62 | 0.92 |
+| BRE | Brazilian Rare Earths | 4 | 85.1%* | 3.0 | 2110 | 0.91 |
+
+Broadening beyond miners pulls in infrastructure (Transurban, Qube), property
+(Goodman) and mega-caps (BHP, 13 ETFs) via broad/sector funds. *BRE's 85% is
+likely a low-free-float / recent-listing data quirk — verify before trusting.
 
 `scripts/detect_etf_accumulation.py` then confirms an *in-progress* buy from the
 daily holdings snapshots (net Δshares ÷ ADV) — the AGE trade, mechanised.
 
-**Full strategy playbook (what works, what doesn't, and the legal framing):**
-see [`../FINDINGS.md`](../FINDINGS.md) §4.
+---
+
+## 2c. Next trades (forward watchlist)
+
+`scripts/next_trades.py` turns the above into a dated, actionable report
+([`next_trades_asx_watch.csv`](tables/next_trades_asx_watch.csv),
+[`next_trades_deletion_rebounds.csv`](tables/next_trades_deletion_rebounds.csv)):
+
+**A — Proven edge (deletion rebound):** live only when a US index deletion is
+inside its ~10-day window. *As of this run: none live* (most recent, EPAM, is
+14 days out and −30% — a reminder the edge is fat-tailed with real left-tail risk).
+
+**B — Heavy ETF overhang that hasn't rallied** (forced demand present, price
+flat/down — a *screen*, not a backtested signal):
+
+| ASX | company | #ETFs | % float | 1m | 3m | score |
+|---|---|---|---|---|---|---|
+| DYL | Deep Yellow | 6 | 22% | +1% | −3% | 0.94 |
+| PDN | Paladin Energy | 6 | 20% | −6% | −3% | 0.94 |
+| BOE | Boss Energy | 4 | 20% | −4% | −21% | 0.89 |
+| BMN | Bannerman Energy | 3 | 19% | +0% | +2% | 0.88 |
+| SLX | Silex Systems | 3 | 14% | +1% | +13% | 0.88 |
+| VUL | Vulcan Energy | 5 | 9% | −5% | +14% | 0.89 |
+
+**C — Catalyst calendar:** next quarterly reconstitution **2026-09-18** (VanEck/
+Global X thematics rebalance then; Sprott uranium semi-annually). The live
+"being bought now" confirmation comes from the daily-snapshot accumulation
+detector.
+
+> Confidence labels matter: only the deletion rebound (A) is backtested. The
+> overhang watchlist (B) is the lab's hypothesis — high ETF ownership + no rally —
+> not a proven trade. Full playbook + legal framing: [`../FINDINGS.md`](../FINDINGS.md) §4.
 
 ---
 

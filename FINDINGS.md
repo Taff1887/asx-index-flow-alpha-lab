@@ -112,9 +112,12 @@ Real, costed edges ranked by how exploitable and how proven:
 
 ### Live tools (real, current data)
 - `scripts/flow_scanner.py` → [`tables/flow_scanner.csv`](reports/tables/flow_scanner.csv):
-  32 global thematic/mining ETFs → 176 ASX names, ranked by a forced-flow score
-  (overhang × days-to-exit × #ETFs × inflow-sensitivity). **AGE currently ranks
-  #7**, behind DYL, PDN, BMN, PEN.
+  **89 global ETFs across every theme → 330 ASX names**, ranked by a forced-flow
+  score (overhang × days-to-exit × #ETFs × inflow-sensitivity). Broadening past
+  miners adds infra (Transurban, Qube), property (Goodman) and mega-caps (BHP).
+- `scripts/next_trades.py` → forward report: (A) live US index-DELETION rebound
+  candidates [proven edge], (B) heavy-overhang ASX names that haven't rallied
+  [screen], (C) the next reconstitution date. Confidence-labelled.
 - `scripts/fetch_etf_holdings_fmp.py` (run daily) + `scripts/detect_etf_accumulation.py`
   → catches the *actual* in-progress buying: net Δshares across ETFs ÷ the stock's
   ADV. This is the AGE trade, mechanised — it goes live once two daily snapshots exist.
@@ -216,6 +219,8 @@ hits far less liquidity and far less arbitrage attention.
 .\.venv\Scripts\python.exe scripts/forced_ownership_map.py        # the overhang map (§2)
 .\.venv\Scripts\python.exe examples/asx200_inclusion_study.py     # ASX 200 benchmark (§1)
 .\.venv\Scripts\python.exe examples/index_inclusion_backtest.py   # multi-index backtest (§3)
+.\.venv\Scripts\python.exe scripts/flow_scanner.py                # broad forced-flow scan (§4)
+.\.venv\Scripts\python.exe scripts/next_trades.py                 # forward watchlist (§4)
 .\.venv\Scripts\python.exe scripts/fetch_etf_holdings_fmp.py      # save today's real snapshots
 ```
 

@@ -32,20 +32,35 @@ from index_flow.utils import get_logger, write_csv
 
 log = get_logger("flow_scanner")
 
-# Broad set of global thematic / junior / mining ETFs that hold thin ASX names.
+# Broad global ETF universe across ALL themes that can hold ASX names. Pure
+# US-domestic funds (QQQ, IWM, XLK...) are excluded — they hold no ASX names.
 ETFS = [
-    # uranium / nuclear
+    # --- Australia / Asia-Pacific / EM / global (broad ASX exposure) ---
+    "EWA", "FLAU", "EPP", "VPL", "AAXJ", "GMF", "EEM", "VWO", "ACWX", "VEU", "IXUS",
+    # --- global SECTOR funds (catch non-mining ASX: CSL, WTC, etc.) ---
+    "IXJ", "IXN", "IXG", "IXC", "MXI", "JXI", "RXI", "KXI", "EXI", "IXP",
+    # --- uranium / nuclear ---
     "URNM", "URNJ", "URA", "NLR", "NUKZ",
-    # gold & silver miners (incl. juniors)
+    # --- gold & silver miners (incl. juniors) ---
     "GDX", "GDXJ", "RING", "SGDM", "GOAU", "SGDJ", "GOEX", "SIL", "SILJ", "SLVP",
-    # rare earth / critical metals / lithium / battery
+    # --- rare earth / critical metals / lithium / battery ---
     "REMX", "LIT", "BATT", "ILIT",
-    # copper / base / broad mining / materials
-    "COPX", "PICK", "XME", "GNR", "MOO", "WOOD",
-    # uranium fuel / clean energy
-    "SLX", "HJEN", "TAN", "ICLN", "PBW",
-    # broad Australia
-    "EWA", "FLAU",
+    # --- copper / base / broad mining / materials / agri / timber ---
+    "COPX", "PICK", "XME", "GNR", "MOO", "WOOD", "VEGI",
+    # --- clean energy / solar / wind / hydrogen ---
+    "ICLN", "TAN", "FAN", "PBW", "QCLN", "HJEN", "ACES", "CNRG",
+    # --- water / infrastructure / REIT (global) ---
+    "PHO", "FIW", "CGW", "PAVE", "IFRA", "IGF", "REET", "VNQI",
+    # --- defense / aerospace / space ---
+    "ITA", "PPA", "XAR", "UFO", "ARKX",
+    # --- tech / AI / robotics / cyber / cloud / semis (global) ---
+    "BOTZ", "ROBO", "IRBO", "ARKQ", "ARKK", "HACK", "CIBR", "BUG", "SKYY", "WCLD",
+    "SOXX", "SMH",
+    # --- biotech / healthcare (global) ---
+    "XBI", "IBB", "ARKG", "IHI", "XHE",
+    # --- fintech / blockchain ---
+    "FINX", "ARKF", "BLOK",
+    "SLX",
 ]
 
 

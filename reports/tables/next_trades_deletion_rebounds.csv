@@ -1,0 +1,2 @@
+ticker,index,removed_security,effective_date,bars_since_effective,days_left_in_window,ret_since_effective_%,reason,live
+EPAM,S&P 500,"EPAM Systems, Inc.",2026-06-01,14,0,-30.08,Market capitalization change.,False

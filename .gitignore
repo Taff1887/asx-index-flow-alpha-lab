@@ -71,3 +71,5 @@ reports/scorecards/*.csv
 !reports/tables/inclusion_runup_by_liquidity.csv
 !reports/tables/flow_scanner.csv
 !reports/tables/etf_accumulation.csv
+!reports/tables/next_trades_asx_watch.csv
+!reports/tables/next_trades_deletion_rebounds.csv
