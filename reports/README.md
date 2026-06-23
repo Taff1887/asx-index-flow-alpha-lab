@@ -155,6 +155,18 @@ Centuria Industrial) — the under-watched corner where forced flow bites hardes
 
 ---
 
+## 2d. Forecasting the forced buying — rebalance calendar
+
+`scripts/etf_rebalance_calendar.py` maps each ETF → its index → published rebalance
+cadence → next effective date + pro-forma watch window
+([`etf_rebalance_calendar.csv`](tables/etf_rebalance_calendar.csv)). Soonest:
+**URA/LIT ~Aug 3** (watch ~Jul 27); **Sep 21 quarterly cluster** (GDXJ/GDX/REMX/NLR/
+URNM + **ISO** S&P/ASX Small Ords, announced ~2 weeks early); **URNJ junior-uranium
+Dec 21**. URNJ rule (uranium, free-float US$30m–$3bn, reconstituted Jun/Dec) lets
+you predict adds — see [`uranium_add_candidates.csv`](tables/uranium_add_candidates.csv).
+
+---
+
 ## How to reproduce
 
 ```bash

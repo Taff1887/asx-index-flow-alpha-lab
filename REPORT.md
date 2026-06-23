@@ -93,6 +93,15 @@ you can't size much without moving them.
 flagged by the scanner is almost certainly a low-free-float / recent-listing quirk
 in the share-count data. Verify against the register before believing it.
 
+### Near-term forced-flow dates to watch (see §7c)
+- **~Jul 27 → Aug 3:** URA / LIT (Solactive uranium / lithium) semi-annual — watch
+  the pro-forma in late July; any newly-added thin ASX name is a pre-effective buy.
+- **early Sep → Sep 21:** the quarterly cluster — GDXJ/GDX/REMX/NLR/URNM and
+  **ISO (S&P/ASX Small Ordinaries)**. ISO is the most front-runnable: adds
+  announced ~2 weeks before the effective date.
+- **mid-Dec → Dec 21:** URNJ/URNM junior-uranium reconstitution (the big one for
+  the thin uranium names).
+
 ### How to actually catch the next AGE trade
 
 Your AGE win came from knowing URNJ *had to keep buying*. The trustworthy version
@@ -259,6 +268,37 @@ directly. The forward path: daily snapshots (`fetch_etf_holdings_fmp.py`) →
 
 ---
 
+## 7c. Forecasting the forced buying — ETF rebalance calendar
+
+`scripts/etf_rebalance_calendar.py` maps each ASX-name-holding ETF to the index it
+tracks and that index's **published** rebalance cadence (researched + sourced),
+then computes the next effective date and the window to watch for the pro-forma
+announcement. Trade logic: providers publish the new constituents *before* the
+effective date — if a newly-added thin name hasn't moved, you can buy before the
+ETF's forced buying on the effective day.
+([`etf_rebalance_calendar.csv`](reports/tables/etf_rebalance_calendar.csv))
+
+| ETF | index | cadence | next effective | watch pro-forma from | conf |
+|---|---|---|---|---|---|
+| URA / LIT | Solactive Uranium / Lithium | semi-annual | **2026-08-03** | ~2026-07-27 | med/low |
+| NLR/URNM/GDX/GDXJ/REMX | MVIS / NYSE Arca | quarterly | 2026-09-21 | ~2026-09-16 | high/med |
+| **ISO** | S&P/ASX Small Ordinaries | quarterly | 2026-09-21 | **~2026-09-07** (announced ~2wks early) | high |
+| COPX | Solactive Copper | semi-annual | 2026-11-02 | ~2026-10-26 | low |
+| **URNJ** | Nasdaq Sprott Junior Uranium | semi-annual | **2026-12-21** | ~2026-12-15 | high |
+
+**How each rebalances (so you can forecast adds):** e.g. URNJ takes any uranium
+company with free-float mcap **US$30m–$3bn**, seasoned ≥3 months, reconstituted
+**June & December**. So a uranium junior crossing US$30m before the late-Nov
+reference date is a likely December add. `uranium_add_candidates.csv` applies this
+rule — though every name on the current watchlist is *already* held, so surfacing
+genuinely new adds needs a broader ASX-uranium universe (a known next step).
+
+The most front-runnable is **S&P/ASX Small Ordinaries (ISO)**: changes are
+announced ~1st Friday and effective after close 3rd Friday — a ~2-week gap, and
+the added names are small/thin where the forced buying bites.
+
+---
+
 ## 8. What does NOT work (honest controls)
 
 - **Post-inclusion momentum** — additions don't keep rising after the effective
@@ -297,6 +337,7 @@ python examples/index_inclusion_backtest.py   # Findings 2,5 (the big backtest)
 python examples/event_path_study.py           # Finding 3 (before/after CAAR curve)
 python examples/make_figures.py               # rebuild the other charts
 python scripts/universal_ownership_map.py     # Finding 4 — ALL 274 ETFs x 393 ASX stocks
+python scripts/etf_rebalance_calendar.py      # §7c — next rebalance dates + watch windows
 python scripts/flow_scanner.py                # narrower: 89 global ETFs
 python scripts/asx_etf_scanner.py             # narrower: ALL 185 ASX-listed ETFs
 python scripts/next_trades.py                 # forward suggested-trades report

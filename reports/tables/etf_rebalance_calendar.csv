@@ -1,0 +1,12 @@
+etf,index,provider,frequency,next_effective,days_until,watch_pro_forma_from,eligibility,source,confidence
+URA,Solactive Global Uranium & Nuclear Components,Solactive,semi-annual,2026-08-03,41,2026-07-27,uranium & nuclear components; effective ~Feb 1 / Aug 1,solactive.com/index/DE000SLA4825,med
+LIT,Solactive Global Lithium,Solactive,semi-annual,2026-08-03,41,2026-07-27,lithium mining & battery,solactive.com,low
+NLR,MVIS Global Uranium & Nuclear Energy,MarketVector,quarterly,2026-09-21,90,2026-09-16,uranium + nuclear utilities,marketvector.com,med
+URNM,North Shore Global Uranium Mining,North Shore/Sprott,semi-annual recon (Jun/Dec) + qtrly rebal (Mar/Sep),2026-09-21,90,2026-09-15,"uranium miners; big recon in Jun & Dec (since Dec 2025), interim rebal Mar/Sep",sprottetfs.com/changes-to-index-tracked-by-sprott-uranium-miners-etf-urnm,high
+GDX,NYSE Arca Gold Miners,ICE/NYSE,quarterly,2026-09-21,90,2026-09-16,gold miners,vaneck.com,med
+GDXJ,MVIS Global Junior Gold Miners,MarketVector,quarterly review (semi-annual recon),2026-09-21,90,2026-09-16,small-cap gold/silver miners; effective Monday after 3rd Friday,marketvector.com/indexes/hard-asset/mvis-global-junior-gold-miners,high
+REMX,MVIS Global Rare Earth/Strategic Metals,MarketVector,quarterly,2026-09-21,90,2026-09-16,rare earth / strategic metals,marketvector.com,med
+ISO.AX,S&P/ASX Small Ordinaries,S&P DJI,quarterly,2026-09-21,90,2026-09-07,ASX 101-300 by float-mcap; effective after close 3rd Friday; announced ~1st Friday,spglobal.com/spdji,high
+MVS.AX,MVIS Australia Small-Cap Dividend Payers,MarketVector,semi-annual,2026-09-21,90,2026-09-16,ASX small-cap dividend payers,marketvector.com,low
+COPX,Solactive Global Copper Miners,Solactive,semi-annual,2026-11-02,132,2026-10-26,copper miners,solactive.com,low
+URNJ,Nasdaq Sprott Junior Uranium Miners,Nasdaq/Sprott,semi-annual,2026-12-21,181,2026-12-15,uranium classification; free-float mcap US$30m-$3bn ($25m/$5bn existing); seasoned >=3m,indexes.nasdaqomx.com/docs/methodology_NSURNJ.pdf,high

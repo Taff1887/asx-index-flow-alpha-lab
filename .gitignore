@@ -77,3 +77,5 @@ reports/scorecards/*.csv
 !reports/tables/asx_etf_universe.csv
 !reports/tables/event_path_caar.csv
 !reports/tables/universal_ownership_map.csv
+!reports/tables/etf_rebalance_calendar.csv
+!reports/tables/uranium_add_candidates.csv
