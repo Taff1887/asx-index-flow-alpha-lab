@@ -35,10 +35,11 @@ changes. As of 23 June 2026. Repo:
   at the effective close earns **+1.09% net/event, t‑stat 3.08**, survives 3×
   costs, beta-neutral — but **decays to nothing within ~2 days** of the
   announcement. You must trade at the announcement; the public window is gone fast.
-- **The standout edge is the *deletion* rebound.** Buying the *deleted* name at
-  the effective close and holding ~10 days returns **+4.3% mean / +1.0% median,
-  hit 56%, 95% CI (+0.5%, +9.2%)** over 373 events. Forced selling overshoots,
-  then snaps back. Fat right tail → small size + stops.
+- **The *deletion* rebound is weaker than the raw number suggests.** Buying a
+  deleted name and holding ~10 days has a big *raw* mean (+4.3%) — but it's
+  fat-tailed and mostly market beta. On a market-adjusted, equal-weighted basis
+  (the event-path study) the abnormal rebound is only **~+0.5%**. Marginal, not a
+  standout — I corrected my earlier overstatement.
 - **The obvious ASX 200 add has no edge** (+0.15%, arbitraged). The effect scales
   with passive AUM: Dow +2.5% → ASX 200 +0.15%.
 - **The real ASX opportunity is the obscure thematic-ETF overhang.** Scanning
@@ -56,17 +57,16 @@ changes. As of 23 June 2026. Repo:
 > **Tier 2** is the forced-flow *screen* (a watchlist, not a proven signal). Sizes
 > and stops are illustrative risk discipline, not advice.
 
-### Tier 1 — proven, dated edges
+### Tier 1 — the one robust, proven pattern
 
-| # | trade | rule | evidence | live now? |
-|---|---|---|---|---|
-| 1 | **Deletion rebound (long)** | Buy a name on the day it's deleted from the S&P 500 / Nasdaq‑100 / Dow (at the effective close); exit +10 trading days or on a stop. | +4.3% mean / +1.0% median net, hit 56%, CI (+0.5%, +9.2%), n=373 | **No live setup today** — most recent deletion (EPAM, 1 Jun) is out of window and −30% (the fat left tail). Re-check weekly with `next_trades.py`. |
-| 2 | **Inclusion run-up (long)** | Buy an addition *at the announcement*, sell at the effective close. | +1.09% net, t=3.1 | Only if you act on the announcement; gone within ~2 days. |
+| trade | rule | evidence | the catch |
+|---|---|---|---|
+| **Inclusion run-up (long)** | Buy an index *addition* at the announcement, sell at the effective close. | +1.09% net, t=3.08, beta-neutral (+0.99% abnormal), survives 3× costs, 15/22 years positive | You must act *on the announcement*; the abnormal run-up is largely done by the effective date and the tradeable bit is gone within ~2 days. Hard for anyone slower than the arbs. |
 
-**Execution for the deletion rebound:** equal-weight basket of *every* qualifying
-deletion (don't cherry-pick), ~0.5–1% of book each, hard stop ~−12%, time-exit
-+10 trading days. The mean is carried by a minority of big rebounds, so you must
-take them all and cap the losers (EPAM −30% is why).
+Tested and **down-weighted**: the *deletion rebound* (buy a just-deleted name,
+hold +10d) has a flashy +4.3% raw mean but it's fat-tailed and mostly market beta
+— abnormal it's only ~+0.5% (see §6). Not recommended as a standalone. There is
+**no live deletion setup today** anyway (last one, EPAM, is out of window and −30%).
 
 ### Tier 2 — forced-flow watchlist (heavy ETF overhang + hasn't rallied)
 
@@ -167,12 +167,24 @@ edge is a *different* regime, not large-cap inclusions):
 
 ---
 
-## 6. Finding 3 — the standout edge: deletion rebound
+## 6. Finding 3 — price path BEFORE & AFTER inclusion vs removal
 
-Buy the *deleted* name at the effective close, hold ~10 days. **+4.3% mean / +1.0%
-median net, hit 56%, 95% CI (+0.5%, +9.2%)**, n=373. Forced selling overshoots
-into the effective date, then snaps back. Mean ≫ median = fat right tail; size
-small and use stops (tail risk = continued decline / delisting).
+The cumulative abnormal return (vs SPY) around the effective date, on 428 real
+additions and 281 removals (S&P 500 / Nasdaq‑100 / Dow, since 2012). This is the
+"price before and after the announcement" you asked for:
+
+![event path](reports/figures/fig_event_path.png)
+
+- **Additions (green):** a clean ~+3.6% abnormal run-up over the 20 days into the
+  effective date, then a **plateau** — the gain is made *before* the date and does
+  not continue after. The tradeable slice is the ~+1.5% from announcement
+  (≈ −5 days) to effective.
+- **Removals (red):** only a modest ~−1% drift into the date and a weak, noisy
+  recovery to ~0 by +20. **The deletion rebound is small once you adjust for the
+  market.**
+
+This corrects the raw deletion-rebound figure: the +4.3% *raw* mean below is
+fat-tailed and largely beta — the abnormal, average effect is ~+0.5%.
 
 ![deletion rebound](reports/figures/fig_deletion_rebound.png)
 
@@ -202,6 +214,38 @@ The score blends overhang × days-to-exit × #ETFs × inflow-sensitivity
 (`inflow5_days` = days of the stock's own volume the ETFs must buy on a +5% inflow
 to each holding fund — the AGE/URNJ math). Full list:
 [`reports/tables/flow_scanner.csv`](reports/tables/flow_scanner.csv).
+
+---
+
+## 7b. Australian ETFs — full scan (all 185 ASX-listed ETFs)
+
+`scripts/asx_etf_scanner.py` enumerates **every ASX-listed ETF (185)**, pulls
+current holdings, and maps the ASX constituents. 80 of them hold ASX names → 373
+unique stocks. ([`asx_etf_universe.csv`](reports/tables/asx_etf_universe.csv),
+[`asx_etf_scanner.csv`](reports/tables/asx_etf_scanner.csv))
+
+**The small/weird ASX ETFs that hold the most THIN names** (the forced-flow
+channel for illiquid stocks):
+
+| ETF | name | AUM $m | #ASX | #thin (ADV<$2m) |
+|---|---|---|---|---|
+| ISO | iShares S&P/ASX Small Ordinaries | 135 | 186 | **33** |
+| MVS | VanEck Small Companies Masters | 215 | 56 | 12 |
+| AUMF | iShares MSCI Australia Multifactor | 145 | 127 | 11 |
+| URNM.AX | Betashares Global Uranium | 350 | 13 | 6 |
+| BANK | Global X Australian Bank Credit | 191 | 137 | 5 |
+
+So on the ASX the thin-name forced-flow route is **the small-cap index funds**
+(ISO, MVS): when a stock enters the S&P/ASX Small Ordinaries, these must buy it.
+Within ASX ETFs overall, the highest forced-flow names are REITs/infra held across
+15–20 funds (Vicinity, Goodman, Charter Hall, Transurban) — large but
+multiply-owned. *(Data note: "AUD.AX" topping the raw score is a cash/currency
+line, not a stock — filtered.)*
+
+This is **current holdings only** — there is no ASX-ETF holdings history anywhere,
+so the *before/after-announcement* study (§6) can't be run on ASX-ETF inclusions
+directly. The forward path: daily snapshots (`fetch_etf_holdings_fmp.py`) →
+`detect_etf_accumulation.py` flags an ASX stock being bought across these funds.
 
 ---
 
@@ -239,10 +283,12 @@ becomes real ASX flow data; (2) drop manual holdings/announcement CSVs into
 
 ```bash
 python examples/asx200_inclusion_study.py     # Finding 1 (ASX 200 benchmark)
-python examples/index_inclusion_backtest.py   # Findings 2,3,5 (the big backtest)
-python examples/make_figures.py               # rebuild the charts in this report
+python examples/index_inclusion_backtest.py   # Findings 2,5 (the big backtest)
+python examples/event_path_study.py           # Finding 3 (before/after CAAR curve)
+python examples/make_figures.py               # rebuild the other charts
 python scripts/forced_ownership_map.py        # Finding 4 (overhang)
-python scripts/flow_scanner.py                # broad 89-ETF scan
+python scripts/flow_scanner.py                # broad 89-ETF (global) scan
+python scripts/asx_etf_scanner.py             # §7b — ALL 185 ASX-listed ETFs
 python scripts/next_trades.py                 # forward suggested-trades report
 python scripts/fetch_etf_holdings_fmp.py      # daily: accrue real holdings history
 python scripts/detect_etf_accumulation.py     # live "being bought now" signal

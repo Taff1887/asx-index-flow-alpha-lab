@@ -73,3 +73,6 @@ reports/scorecards/*.csv
 !reports/tables/etf_accumulation.csv
 !reports/tables/next_trades_asx_watch.csv
 !reports/tables/next_trades_deletion_rebounds.csv
+!reports/tables/asx_etf_scanner.csv
+!reports/tables/asx_etf_universe.csv
+!reports/tables/event_path_caar.csv

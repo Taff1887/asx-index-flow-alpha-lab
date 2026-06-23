@@ -44,10 +44,12 @@ core thesis, quantified.)
 ![by year](figures/fig_inclusion_by_year.png)
 ([`inclusion_runup_by_year.csv`](tables/inclusion_runup_by_year.csv))
 
-### The standout edge: index-DELETION rebound (buy the forced-selling washout)
-Buy the deleted name at the effective close, hold ~10 days. **373 real events:
-+4.3% mean / +1.0% median net, hit 56%, 95% CI (+0.5%, +9.2%)** — excludes zero.
-Fat right tail, so size small + use stops.
+### Price BEFORE & AFTER inclusion vs removal (cumulative abnormal return)
+Additions run up ~+3.6% abnormal into the effective date then plateau; removals
+only dip ~−1% and barely recover. The "deletion rebound" is small once you adjust
+for the market — the raw +4.3% mean (histogram below) is fat-tailed and mostly
+beta. ([`event_path_caar.csv`](tables/event_path_caar.csv))
+![event path](figures/fig_event_path.png)
 ![deletion rebound](figures/fig_deletion_rebound.png)
 
 ### Honest control: thinner large-cap adds do NOT drift more
